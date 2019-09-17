@@ -22,6 +22,10 @@
 IMPLEMENT_DYNCREATE(Cmikhailovskiilab1Doc, CDocument)
 
 BEGIN_MESSAGE_MAP(Cmikhailovskiilab1Doc, CDocument)
+	ON_COMMAND(ID_EDIT_CLEAR, &Cmikhailovskiilab1Doc::OnEditClear)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, &Cmikhailovskiilab1Doc::OnUpdateEditClear)
+	ON_COMMAND(ID_EDIT_UNDO, &Cmikhailovskiilab1Doc::OnEditUndo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &Cmikhailovskiilab1Doc::OnUpdateEditUndo)
 END_MESSAGE_MAP()
 
 
@@ -157,4 +161,52 @@ CLine* Cmikhailovskiilab1Doc::GetLine(int Index)
 int Cmikhailovskiilab1Doc::GetNumLines()
 {
 	return (int)m_LineArray.GetSize();
+}
+
+
+void Cmikhailovskiilab1Doc::DeleteContents()
+{
+	// TODO: добавьте специализированный код или вызов базового класса
+	int Index = (int)m_LineArray.GetSize();
+	while (Index--)
+		delete m_LineArray.GetAt(Index);
+	m_LineArray.RemoveAll();
+
+	CDocument::DeleteContents();
+}
+
+
+void Cmikhailovskiilab1Doc::OnEditClear()
+{
+	DeleteContents();
+	UpdateAllViews(0);
+
+	// TODO: добавьте свой код обработчика команд
+}
+
+
+void Cmikhailovskiilab1Doc::OnUpdateEditClear(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable((int)m_LineArray.GetSize());
+	// TODO: добавьте свой код обработчика ИП обновления команд
+}
+
+
+void Cmikhailovskiilab1Doc::OnEditUndo()
+{
+	// TODO: добавьте свой код обработчика команд
+	int Index = (int)m_LineArray.GetUpperBound();
+	if (Index > -1)
+	{
+		delete m_LineArray.GetAt(Index);
+		m_LineArray.RemoveAt(Index);
+	}
+	UpdateAllViews(0);
+}
+
+
+void Cmikhailovskiilab1Doc::OnUpdateEditUndo(CCmdUI *pCmdUI)
+{
+	// TODO: добавьте свой код обработчика ИП обновления команд
+	UpdateAllViews(0);
 }

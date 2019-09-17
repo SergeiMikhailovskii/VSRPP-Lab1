@@ -45,6 +45,13 @@ BOOL Cmikhailovskiilab1View::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: изменить класс Window или стили посредством изменения
 	//  CREATESTRUCT cs
+	m_ClassName = AfxRegisterWndClass(
+		CS_HREDRAW | CS_VREDRAW, // стили окна
+		0,					  // без указателя;
+		(HBRUSH)::GetStockObject(WHITE_BRUSH),
+		// задать чисто белый фон;
+		0);					  //без значка
+	cs.lpszClass = m_ClassName;
 
 	return CView::PreCreateWindow(cs);
 }

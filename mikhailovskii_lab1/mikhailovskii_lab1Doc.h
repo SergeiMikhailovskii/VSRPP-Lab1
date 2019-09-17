@@ -60,4 +60,10 @@ protected:
 	// Вспомогательная функция, задающая содержимое поиска для обработчика поиска
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	virtual void DeleteContents();
+	afx_msg void OnEditClear();
+	afx_msg void OnUpdateEditClear(CCmdUI *pCmdUI);
+	afx_msg void OnEditUndo();
+	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 };
