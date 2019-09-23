@@ -133,14 +133,18 @@ void Cmikhailovskiilab1View::OnMouseMove(UINT nFlags, CPoint point)
 // и/или вызов стандартного обработчика
 
 	::SetCursor(m_HCross);
+	CPen* oldPen;
 	if (m_Dragging)
 	{
 		CClientDC ClientDC(this);
-		ClientDC.SetROP2(R2_NOT);
+		CPen pen(PS_SOLID, 0, RGB(255, 255, 255));
+		oldPen = ClientDC.SelectObject(&pen);
+		ClientDC.SetROP2(R2_COPYPEN);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(m_PointOld);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(point);
+		ClientDC.SelectObject(oldPen);
 		m_PointOld = point;
 	}
 
@@ -154,11 +158,14 @@ void Cmikhailovskiilab1View::OnLButtonUp(UINT nFlags, CPoint point)
 
 	if (m_Dragging)
 	{
+		CPen* oldPen;
+
 		m_Dragging = 0;
 		::ReleaseCapture();
 		::ClipCursor(NULL);
 		CClientDC ClientDC(this);
-		ClientDC.SetROP2(R2_NOT);
+		CPen pen(PS_SOLID, 1, RGB(rand() % 256, rand() % 256, rand() % 256));
+		oldPen = ClientDC.SelectObject(&pen);
 		ClientDC.MoveTo(m_PointOrigin);
 		ClientDC.LineTo(m_PointOld);
 		ClientDC.SetROP2(R2_COPYPEN);

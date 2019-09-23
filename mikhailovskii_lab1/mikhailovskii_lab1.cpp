@@ -108,6 +108,8 @@ BOOL Cmikhailovskiilab1App::InitInstance()
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
+	EnableShellOpen();
+	RegisterShellFileTypes();
 
 
 	// Разрешить использование расширенных символов в горячих клавишах меню
@@ -127,6 +129,7 @@ BOOL Cmikhailovskiilab1App::InitInstance()
 	// Одно и только одно окно было инициализировано, поэтому отобразите и обновите его
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+	m_pMainWnd->DragAcceptFiles();
 	return TRUE;
 }
 

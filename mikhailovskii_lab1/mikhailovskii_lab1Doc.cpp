@@ -62,10 +62,12 @@ void Cmikhailovskiilab1Doc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: добавьте код сохранения
+		m_LineArray.Serialize(ar);
 	}
 	else
 	{
 		// TODO: добавьте код загрузки
+		m_LineArray.Serialize(ar);
 	}
 }
 
@@ -140,17 +142,29 @@ void Cmikhailovskiilab1Doc::Dump(CDumpContext& dc) const
 
 // Команды Cmikhailovskiilab1Doc
 
+IMPLEMENT_SERIAL (CLine, CObject, 1)
 void CLine::Draw(CDC *PDC)
 {
 	PDC->MoveTo(m_X1, m_Y1);
 	PDC->LineTo(m_X2, m_Y2);
 }
 
+void CLine::Serialize(CArchive& ar) {
+	if (ar.IsStoring()) {
+		ar << m_X1 << m_Y1 << m_X2 << m_Y2;
+	}
+	else {
+		ar >> m_X1 >> m_Y1 >> m_X2 >> m_Y2;
+	}
+}
+
 void Cmikhailovskiilab1Doc::AddLine(int X1, int Y1, int X2, int Y2)
 {
 	CLine *pLine = new CLine(X1, Y1, X2, Y2);
 	m_LineArray.Add(pLine);
+	SetModifiedFlag();
 }
+
 CLine* Cmikhailovskiilab1Doc::GetLine(int Index)
 {
 	if (Index<0 || Index>m_LineArray.GetUpperBound())
@@ -180,6 +194,7 @@ void Cmikhailovskiilab1Doc::OnEditClear()
 {
 	DeleteContents();
 	UpdateAllViews(0);
+	SetModifiedFlag();
 
 	// TODO: добавьте свой код обработчика команд
 }
@@ -202,6 +217,7 @@ void Cmikhailovskiilab1Doc::OnEditUndo()
 		m_LineArray.RemoveAt(Index);
 	}
 	UpdateAllViews(0);
+	SetModifiedFlag();
 }
 
 
